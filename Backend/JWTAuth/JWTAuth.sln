@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JWTAuth.API", "JWTAuth.API\JWTAuth.API.csproj", "{F078A3C8-4CCA-41E7-85A5-E77D0C8EBCB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JWTAuth.API", "JWTAuth.API\JWTAuth.API.csproj", "{F078A3C8-4CCA-41E7-85A5-E77D0C8EBCB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JWTAuth.DataAccess", "JWTAuth.DataAccess\JWTAuth.DataAccess.csproj", "{6E4F7891-2332-4127-AC37-A78EB8C251DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JWTAuth.DataAccess", "JWTAuth.DataAccess\JWTAuth.DataAccess.csproj", "{6E4F7891-2332-4127-AC37-A78EB8C251DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JWTAuth.Server", "JWTAuth.Server\JWTAuth.Server.csproj", "{12391844-1B33-4EBF-971E-219221B57BF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JWTAuth.Server", "JWTAuth.Server\JWTAuth.Server.csproj", "{12391844-1B33-4EBF-971E-219221B57BF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JWTAuth.Shared", "JWTAuth.Shared\JWTAuth.Shared.csproj", "{E986D3BB-B492-488D-8B12-4079E7F36A25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JWTAuth.Shared", "JWTAuth.Shared\JWTAuth.Shared.csproj", "{E986D3BB-B492-488D-8B12-4079E7F36A25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
