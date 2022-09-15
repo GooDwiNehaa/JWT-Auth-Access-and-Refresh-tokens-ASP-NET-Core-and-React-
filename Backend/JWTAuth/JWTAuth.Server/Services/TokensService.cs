@@ -110,6 +110,7 @@ namespace JWTAuth.Server.Services
             }
 
             var user = await this.db.Tokens
+                                 .Include(t => t.UserAgent)
                                  .Where(t => t.RefreshToken.Equals(tokens.RefreshJwt)
                                              && t.UserAgent.OS.Equals(userAgentData.OS)
                                              && t.UserAgent.Browser.Equals(userAgentData.Browser))
@@ -153,7 +154,7 @@ namespace JWTAuth.Server.Services
         private string GenerateAccessToken(UserDto user)
         {
             var now = DateTime.UtcNow;
-            var expires = now.Add(TimeSpan.FromMinutes(1));
+            var expires = now.Add(TimeSpan.FromSeconds(AccessTokenOptions.LIFETIME));
 
             var claims = new List<Claim>
             {
@@ -183,19 +184,27 @@ namespace JWTAuth.Server.Services
             }
         }
 
-        private async Task<bool> ValidateAccessTokenAsync(string accessToken, CancellationToken cancellationToken = default)
+        private async Task<bool> ValidateAccessTokenAsync(string accessToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var claimsPrincipal = tokenHandler.ValidateToken(accessToken, GetTokenValidationParameters(), out var _);
 
-            var userIdClaim = claimsPrincipal.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier));
+            var claims = claimsPrincipal.Claims.ToList();
+
+            var userIdClaim = claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier));
             if (userIdClaim is null)
             {
                 return false;
             }
 
-            var userExist = await this.db.Users.AnyAsync(u => u.Id.Equals(new Guid(userIdClaim.Value)), cancellationToken);
+            var userEmailClaim = claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Email));
+            if (userEmailClaim is null)
+            {
+                return false;
+            }
+
+            var userExist = await this.db.Users.AnyAsync(u => u.Id.Equals(new Guid(userIdClaim.Value)) && u.Email.Equals(userEmailClaim.Value));
             if (!userExist)
             {
                 return false;
@@ -204,9 +213,9 @@ namespace JWTAuth.Server.Services
             return true;
         }
 
-        private async Task<bool> ValidateRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
+        private async Task<bool> ValidateRefreshTokenAsync(string refreshToken)
         {
-            var token = await this.db.Tokens.FirstOrDefaultAsync(t => t.RefreshToken.Equals(refreshToken), cancellationToken);
+            var token = await this.db.Tokens.FirstOrDefaultAsync(t => t.RefreshToken.Equals(refreshToken));
             if (token is null)
             {
                 return false;
